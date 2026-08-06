@@ -1,0 +1,46 @@
+---
+description: CLIME AI Growth OS constitutional and V1 slim rules for all implementation work
+alwaysApply: true
+---
+
+# CLIME AI Growth OS — Cursor Rules
+
+## Product
+
+- This is a **Growth Operating System** for CLIME, not an SNS auto-poster.
+- App brand: **CLIME AI Growth Studio**. Architecture name: **CLIME AI Growth Operating System**.
+- Export-first. Live publish only when Capability Matrix allows `canPublish`.
+
+## Five constitutional locks
+
+1. **Plugin Contract First** — Register modules via Manifest only. Core must not import module internals.
+2. **Schema Versioning** — Workflow, Knowledge, Export, Event, and other JSON payloads must include `schema_version`.
+3. **Task State Machine** — Jobs: `QUEUED → RUNNING → VALIDATING → OPTIMIZING → READY → PUBLISHED` (+ documented failure/cancel states).
+4. **No AI Vendor Dependency** — Call vendors only through Adapters (OpenAI/Gemini/Claude/DeepSeek/Ollama/etc.).
+5. **Everything is a Workflow** — Research, Planning, Revenue, Generate, Validate run as Workflow Nodes.
+
+## V1 ownership
+
+- Growth packages: `research/`, `planning/`, `decision/`, `revenue/`, `knowledge/` only.
+- Executive: week/month/quarter only. **Decision Engine** alone emits daily priority.
+- Meta: Executive + Goal only. Cost → AI Engine. Reflection → Learning. Strategy → Knowledge `namespace=strategy`.
+- One Knowledge Store with namespaces. Settings: Global → Project → User.
+- Governance V1: Feature → Policy → Runtime. Lean Module Registry + Manifest sidecar.
+- UI → IPC → Domain API only. Four buses: Command / Query / Domain / System.
+
+## Tooling
+
+- Package manager: **pnpm only** (`pnpm-lock.yaml`).
+- Secrets never in git. Prefer Vault / OS keychain.
+- Prefer lean SQLite tables + JSON; do not invent 100 first-class entities in V1.
+- Read `docs/architecture/*` before inventing new engines or top-level packages.
+
+## Anti-patterns (reject)
+
+- God-object Growth/Executive/Meta
+- Hard-coding a single LLM vendor in domain code
+- Skipping Validate before Optimize/Publish
+- Bypassing Planner Queue / Capability Matrix / Feature→Policy→Runtime
+- Adding Workspace settings before Team Mode (L+)
+
+---

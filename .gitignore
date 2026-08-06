@@ -1,0 +1,50 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build / Electron
+dist/
+out/
+release/
+*.exe
+*.blockmap
+.webpack/
+
+# Env & secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+.vault/
+
+# Data
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+data/
+tmp/
+.cache/
+
+# Logs / OS
+logs/
+*.log
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# Test / coverage
+coverage/
+.nyc_output/
+
+# Prisma
+prisma/*.db
+prisma/*.db-journal
