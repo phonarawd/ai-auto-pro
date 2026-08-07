@@ -9,6 +9,7 @@ release/
 *.exe
 *.blockmap
 .webpack/
+*.tsbuildinfo
 
 # Env & secrets
 .env
