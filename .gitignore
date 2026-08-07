@@ -44,7 +44,13 @@ Desktop.ini
 # Test / coverage
 coverage/
 .nyc_output/
+test-results/
+playwright-report/
 
-# Prisma
-prisma/*.db
-prisma/*.db-journal
+# Turborepo
+.turbo/
+
+# Local DB artifacts (Drizzle / SQLite)
+*.db-journal
+drizzle/*.db
+drizzle/*.db-journal

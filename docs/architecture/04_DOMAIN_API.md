@@ -1,7 +1,7 @@
 # 04 — Domain API: Renderer → IPC → Engines
 
-**Status:** Phase 0 RFC  
-**Critical rule:** UI must never import buses, Prisma, connectors, or engine internals.
+**Status:** Phase 0 RFC
+**Critical rule:** UI must never import buses, Drizzle/ORM clients, connectors, or engine internals.
 
 ---
 
@@ -21,7 +21,7 @@ Renderer (Next.js UI)
 | Domain API client calls | Event bus subscribe/publish |
 | View-models / DTO types | Direct engine class imports |
 | Feature-flag *presentation* | Capability Matrix mutation |
-| Trace ID display | Vault / Prisma / Playwright |
+| Trace ID display | Vault / Drizzle / Playwright |
 
 ---
 
@@ -61,12 +61,19 @@ All methods return typed results + `traceId`. Mutations are Commands under the h
 ### 3.2 IPC conventions
 
 ```text
-channel: "domain:<namespace>.<method>"
-payload: { requestId, projectId?, args, schema_version }
+channel: "domain:<namespace>.<method>"   # namespace lowercase; method camelCase
+payload: { requestId, schema_version, traceId, projectId?, args }
 response: { requestId, ok, data | error, traceId }
 ```
 
-- Timeouts for long AI work: return `jobId` immediately; progress via System/Domain events forwarded as **Inbox/push notifications**, not open bus subscriptions in UI.
+- **`requestId`:** caller-generated correlation id (dedup, cancel, streaming).
+- **`traceId`:** required on **both** request and response; UI origin on user actions; propagated through engines and observability.
+- **`schema_version`:** `@clime/shared` `SCHEMA_VERSION` at boundary; reject unknown.
+- Async commands (`[A]` in frozen map): return `{ jobId, traceId, schema_version }` immediately (`job_<ulid>`); UI must not await completion on IPC.
+- Progress via System/Domain events forwarded as **Inbox/NotificationAPI push**, not open bus subscriptions in UI.
+
+**Frozen contract:** [`S3A_DOMAIN_API_CONTRACT.md`](../appendix/S3A_DOMAIN_API_CONTRACT.md) — full namespace·method map + jobId rules.
+
 - Streaming (token stream): optional `domain:ai.stream` with backpressure; cancel via `requestId`.
 
 ### 3.3 Preload allowlist
@@ -106,7 +113,7 @@ UI maps codes to Inbox / Doctor / Matrix badges — never raw stack traces.
 
 ## 6. AuthN/AuthZ for local app
 
-V1: single Owner/Admin on machine (Developer license default).  
+V1: single Owner/Admin on machine (Developer license default).
 API still checks Project scope + Feature/Policy/Capability so Team Mode (L+) can deepen without rewriting UI calls.
 
 ---
@@ -148,7 +155,14 @@ out: { exportPath, files[], accountsJson, schema_version }
 
 ```text
 in:  { accountId }
-out: { flags: { read, profile, schedule, publish, story, reels, ... }, source: "manifest" }
+out: {
+  canPublish,
+  publishMode: "api" | "session",
+  riskLevel: "low" | "medium" | "high",
+  flags: { read, profile, schedule, publish, story, reels, ... },
+  source: "manifest",
+  schema_version
+}
 ```
 
 ### ExecutiveAPI.explainDecision
@@ -182,7 +196,7 @@ out: { graph: nodes[], edges[], narrative, schema_version }
 ## 11. Anti-patterns
 
 1. Renderer importing `@clime/growth/decision`
-2. `ipcMain` handlers calling Prisma directly (bypass Domain API)
+2. `ipcMain` handlers calling Drizzle/ORM directly (bypass Domain API)
 3. UI constructing Workflow DSL and writing files without WorkflowAPI
 4. “Temporary” bus subscription “just for debugging” left in production UI
 5. Platform SDK in renderer for “faster login”
@@ -214,6 +228,7 @@ packages/domain-api/
 - Buses → `12_INFRASTRUCTURE.md`
 - Account Matrix → `10_ACCOUNT.md`
 - Desktop UX → `15_DESKTOP_AND_ROADMAP.md`
+- **Frozen implementation contract** → [`S3A_DOMAIN_API_CONTRACT.md`](../appendix/S3A_DOMAIN_API_CONTRACT.md)
 
 ---
 

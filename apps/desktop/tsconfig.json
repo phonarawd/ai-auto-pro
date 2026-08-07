@@ -1,0 +1,37 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"]
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["dist", "src/**/__eslint_fixtures__/**"],
+  "references": [
+    { "path": "../../packages/shared" },
+    { "path": "../../packages/account" },
+    { "path": "../../packages/analytics" },
+    { "path": "../../packages/automation" },
+    { "path": "../../packages/browser-automation" },
+    { "path": "../../packages/config" },
+    { "path": "../../packages/content" },
+    { "path": "../../packages/domain-api" },
+    { "path": "../../packages/growth/research" },
+    { "path": "../../packages/growth/planning" },
+    { "path": "../../packages/growth/knowledge" },
+    { "path": "../../packages/growth/revenue" },
+    { "path": "../../packages/growth/decision" },
+    { "path": "../../packages/learning" },
+    { "path": "../../packages/memory" },
+    { "path": "../../packages/meta" },
+    { "path": "../../packages/notification" },
+    { "path": "../../packages/observability" },
+    { "path": "../../packages/storage" },
+    { "path": "../../packages/tool" },
+    { "path": "../../packages/ui" },
+    { "path": "../../packages/vault" },
+    { "path": "../../packages/workflow" }
+  ]
+}

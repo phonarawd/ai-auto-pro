@@ -1,0 +1,38 @@
+{
+  "name": "@clime/domain-api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./electron/ipc-register": {
+      "types": "./dist/electron/ipc-register.d.ts",
+      "import": "./dist/electron/ipc-register.js"
+    },
+    "./electron/preload-bridge": {
+      "types": "./dist/electron/preload-bridge.d.ts",
+      "import": "./dist/electron/preload-bridge.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@clime/feature-management": "workspace:*",
+    "@clime/observability": "workspace:*",
+    "@clime/shared": "workspace:*",
+    "zod": "^4.4.3"
+  }
+}

@@ -82,16 +82,16 @@ elseif (Test-Path $ollamaExe) { Ok "ollama installed at $ollamaExe (restart shel
 else { Warn "Ollama missing (needed for local LLM adapter; cloud adapters still work)" }
 
 # sqlite3
-if (Has-Cmd sqlite3) { Ok "sqlite3 CLI present" } else { Warn "sqlite3 CLI missing (Prisma embeds SQLite; CLI is for debug)" }
+if (Has-Cmd sqlite3) { Ok "sqlite3 CLI present" } else { Warn "sqlite3 CLI missing (Drizzle/SQLite CLI is for debug; app uses embedded SQLite)" }
 
 # Docker optional
 if (Has-Cmd docker) { Ok "docker present" } else { Warn "Docker missing (optional until Postgres port)" }
 
-# Disk
+# Disk — packaging gate: ≥20 GB free on C: (K2 / 06_SHIP.md)
 try {
   $freeGb = [math]::Round((Get-PSDrive C).Free / 1GB, 2)
-  if ($freeGb -lt 15) { Fail "C: free space ${freeGb}GB (<15GB) — too low for Electron builds" }
-  elseif ($freeGb -lt 25) { Warn "C: free space ${freeGb}GB — recommend >=25GB" }
+  if ($freeGb -lt 20) { Fail "C: free space ${freeGb}GB (<20GB) — too low for Electron packaging (see docs/setup/06_SHIP.md)" }
+  elseif ($freeGb -lt 25) { Warn "C: free space ${freeGb}GB — recommend >=25GB before full NSIS dist" }
   else { Ok "C: free space ${freeGb}GB" }
 } catch { Warn "Could not read disk free space" }
 

@@ -1,7 +1,7 @@
 # 09 — Analytics: Funnel, ROI, Experiment, Simulator
 
-**Status:** Phase 0 RFC  
-**Package:** `packages/analytics/`  
+**Status:** Phase 0 RFC
+**Package:** `packages/analytics/`
 **Rule:** Analytics measures and experiments — it does not emit daily production mix (Decision does).
 
 ---
@@ -28,10 +28,10 @@ content → views/CTR → signup → investment → revenue / ROI
 
 V1 captures what is available via:
 
-- Manual entry  
-- Import files  
-- Official API metrics when Capability allows  
-- Export-side acknowledgements  
+- Manual entry
+- Import files
+- Official API metrics when Capability allows
+- Export-side acknowledgements
 
 **Honesty:** missing stages stay null; no fake firehose.
 
@@ -45,9 +45,9 @@ Events: `RoiRecorded`, `FunnelUpdated` on Domain Bus → Revenue Prioritizer + E
 
 ## 3. Experiment Engine (V1)
 
-- Title / thumb / CTA light A/B  
-- Always HumanGate on spend-like actions  
-- Winners feed Learning with Confidence  
+- Title / thumb / CTA light A/B
+- Always HumanGate on spend-like actions
+- Winners feed Learning with Confidence
 - Multivariate landing / ads arms = L+ (Expansion #10)
 
 ```text
@@ -58,10 +58,10 @@ Experiment assign → Content variants → Measure → Score → Learning propos
 
 ## 4. Growth Simulator
 
-- Estimates e.g. “25 reels → est. signups/invest/revenue”  
-- Outputs are **labeled estimates** with assumption version  
-- Feeds Revenue Forecast UI (Expansion #8 deepens ops UI)  
-- Must not auto-mutate Decision without human/Executive policy  
+- Estimates e.g. “25 reels → est. signups/invest/revenue”
+- Outputs are **labeled estimates** with assumption version
+- Feeds Revenue Forecast UI (Expansion #8 deepens ops UI)
+- Must not auto-mutate Decision without human/Executive policy
 
 ---
 
@@ -120,9 +120,9 @@ Do not overload one system.
 
 Prefer:
 
-- `AnalyticsSnapshot`  
-- Experiment arm JSON  
-- Funnel raw events as JSON until volume forces tables  
+- `AnalyticsSnapshot`
+- Experiment arm JSON
+- Funnel raw events as JSON until volume forces tables
 
 Postgres port later — same Repository interfaces.
 
@@ -141,10 +141,10 @@ Postgres port later — same Repository interfaces.
 
 ## 11. Anti-patterns
 
-1. Analytics emitting Planner Queue items  
-2. Unlabeled “predicted revenue” shown as fact  
-3. Auto-publish winner variants without HumanGate  
-4. Coupling simulator to a single LLM vendor  
+1. Analytics emitting Planner Queue items
+2. Unlabeled “predicted revenue” shown as fact
+3. Auto-publish winner variants without HumanGate
+4. Coupling simulator to a single LLM vendor
 
 ---
 

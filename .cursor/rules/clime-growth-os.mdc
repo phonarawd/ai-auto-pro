@@ -7,17 +7,20 @@ alwaysApply: true
 
 ## Product
 
-- This is a **Growth Operating System** for CLIME, not an SNS auto-poster.
+- This is a **Growth Operating System** for CLIME, not an SNS auto-poster brand.
 - App brand: **CLIME AI Growth Studio**. Architecture name: **CLIME AI Growth Operating System**.
-- Export-first. Live publish only when Capability Matrix allows `canPublish`.
+- V1 core loop: research → decide → generate → validate → **auto-publish** → measure → learn.
+- Publish ladder: official API (P0) → BAE session auto-publish (P1); Export = **backup log**.
+- Capability Matrix is a status board: `canPublish` + `publishMode(api|session)` + `riskLevel`.
+- Challenge/captcha/lock → **auto-pause + Inbox**. Paid Ads spend always **HumanGate**.
 
 ## Five constitutional locks
 
 1. **Plugin Contract First** — Register modules via Manifest only. Core must not import module internals.
-2. **Schema Versioning** — Workflow, Knowledge, Export, Event, and other JSON payloads must include `schema_version`.
-3. **Task State Machine** — Jobs: `QUEUED → RUNNING → VALIDATING → OPTIMIZING → READY → PUBLISHED` (+ documented failure/cancel states).
+2. **Schema Versioning** — Workflow, Knowledge, Export, Event, and other JSON payloads must include `schema_version` (Zod at boundaries).
+3. **Task State Machine** — Jobs: `QUEUED → RUNNING → VALIDATING → OPTIMIZING → READY → PUBLISHED` (+ failure/cancel/`PAUSED_CHALLENGE`).
 4. **No AI Vendor Dependency** — Call vendors only through Adapters (OpenAI/Gemini/Claude/DeepSeek/Ollama/etc.).
-5. **Everything is a Workflow** — Research, Planning, Revenue, Generate, Validate run as Workflow Nodes.
+5. **Everything is a Workflow** — Research, Planning, Revenue, Generate, Validate, Publish run as Workflow Nodes.
 
 ## V1 ownership
 
@@ -30,10 +33,20 @@ alwaysApply: true
 
 ## Tooling
 
-- Package manager: **pnpm only** (`pnpm-lock.yaml`).
+- Package manager: **pnpm only** (`pnpm-lock.yaml`). Monorepo: **pnpm workspaces + Turborepo**.
+- ORM: **Drizzle + SQLite** behind Repository. Schema: **Zod**.
+- UI: **Tailwind + shadcn/ui + Pretendard**. Test/Lint: **Vitest + Playwright + ESLint + Prettier**.
+- Ship: **electron-builder + electron-updater**.
 - Secrets never in git. Prefer Vault / OS keychain.
 - Prefer lean SQLite tables + JSON; do not invent 100 first-class entities in V1.
 - Read `docs/architecture/*` before inventing new engines or top-level packages.
+- Beginners: `docs/setup/04_HOW_TO_OPERATE.md`.
+
+## Phase A implementation gate
+
+- Phase 0 was docs-only until `docs/setup/05_IMPL_APPROVAL.md` Status is **APPROVED** (human phrase: “Approve Phase A” / “Approve implementation” / “Phase A 승인”).
+- If Status is still **AWAITING EXPLICIT APPROVAL**, refuse app scaffolding and point to that file.
+- When Status is **APPROVED**, app scaffolding is allowed; prefer narrow Phase A slices (infra → Feature→Policy→Runtime → Domain API → AI Engine → CI).
 
 ## Anti-patterns (reject)
 
@@ -41,6 +54,9 @@ alwaysApply: true
 - Hard-coding a single LLM vendor in domain code
 - Skipping Validate before Optimize/Publish
 - Bypassing Planner Queue / Capability Matrix / Feature→Policy→Runtime
+- Captcha bypass · fingerprint spoof · proxy identity laundering · spam botnet
 - Adding Workspace settings before Team Mode (L+)
+- Reintroducing Prisma as V1 ORM
+- Starting Phase A without explicit human approval in `05_IMPL_APPROVAL.md`
 
 ---

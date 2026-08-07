@@ -1,6 +1,6 @@
 # Toolchain Audit Log
 
-Date: 2026-08-07 (Asia/Seoul)  
+Date: 2026-08-07 (Asia/Seoul)
 Machine: Windows 10 (19045) · `C:\Users\PC\AI_CONTENT_OS`
 
 ## Installed / verified this session
@@ -40,10 +40,24 @@ None. Toolchain gate is **GREEN (0 FAIL)**.
 
 Yarn, Chocolatey, Java, .NET SDK, Rust — not required for V1.
 
-## Gate command
+## Gate commands
 
 ```powershell
+powershell -ExecutionPolicy Bypass -File scripts\check-all.ps1
+# or individually:
 powershell -ExecutionPolicy Bypass -File scripts\check-toolchain.ps1
+powershell -ExecutionPolicy Bypass -File scripts\check-phase0.ps1
+npx --yes markdownlint-cli2
 ```
 
-Target: **GREEN (0 FAIL)** before Phase A app code.
+Target: **ALL GATES GREEN** before Phase A app code.
+
+## Quality audit (2026-08-07 follow-up)
+
+| Gate | Result |
+|---|---|
+| `check-toolchain.ps1` | GREEN (1 WARN: `cl.exe` not on PATH — expected) |
+| `check-phase0.ps1` | GREEN (120 checks, 0 FAIL) |
+| `markdownlint-cli2` | GREEN (21 files, 0 issues) |
+| ESLint / Vitest / tsc (monorepo) | Phase A slice 1 — root `package.json` + turbo; run `pnpm lint`, `pnpm typecheck`, `pnpm test` |
+| Playwright E2E | Deferred until suites exist |

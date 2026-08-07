@@ -1,6 +1,6 @@
 # 11 — Memory · Knowledge Store · Learning · Reflection
 
-**Status:** Phase 0 RFC  
+**Status:** Phase 0 RFC
 **Rule:** Memory ≠ Knowledge ≠ Learning ≠ Reflection — no overlapping ownership.
 
 ---
@@ -39,8 +39,8 @@ Short → Long (~30d) → Archive
 
 ### Rules
 
-- Policies do **not** live in Memory tables (Learning owns policies).  
-- Curated assets do **not** live in Memory (Knowledge Store).  
+- Policies do **not** live in Memory tables (Learning owns policies).
+- Curated assets do **not** live in Memory (Knowledge Store).
 - Example episode: “CTR 11% on Reels topic X (date)”.
 
 ---
@@ -76,20 +76,20 @@ One browser filtered by namespace / type / tags (Account ops § Knowledge Store 
 
 ## 4. Learning Engine
 
-- Stores **policies** with **Confidence Score**  
-- Auto-promote only if Confidence ≥ threshold (e.g. 91%)  
-- Low confidence (e.g. 31%) = suggest only / no change  
-- Experiment winners and ROI patterns are inputs  
-- Writes may update Policy rules (governance) when approved  
+- Stores **policies** with **Confidence Score**
+- Auto-promote only if Confidence ≥ threshold (e.g. 91%)
+- Low confidence (e.g. 31%) = suggest only / no change
+- Experiment winners and ROI patterns are inputs
+- Writes may update Policy rules (governance) when approved
 
 ---
 
 ## 5. Reflection
 
-- Analyzes outcomes (postmortems)  
-- Proposes Policy Updates → Learning (with confidence)  
-- May suggest Executive reallocations (week/month) — does not enqueue daily Decision ranks  
-- Human confirm for aggressive rules / Memory writes  
+- Analyzes outcomes (postmortems)
+- Proposes Policy Updates → Learning (with confidence)
+- May suggest Executive reallocations (week/month) — does not enqueue daily Decision ranks
+- Human confirm for aggressive rules / Memory writes
 
 ---
 
@@ -122,19 +122,19 @@ Expansion #11 Knowledge Evolution 2.0: success→pattern→rule→**cross-projec
 
 ## 9. Data honesty & privacy
 
-- Vault for any secret-bearing snippets (never in Knowledge plaintext if credential-like)  
-- Capability-gated research → Knowledge only with provenance tags  
-- User confirm for aggressive automation memories  
+- Vault for any secret-bearing snippets (never in Knowledge plaintext if credential-like)
+- Capability-gated research → Knowledge only with provenance tags
+- User confirm for aggressive automation memories
 
 ---
 
 ## 10. Anti-patterns
 
-1. Meta owning Reflection or Learning  
-2. Decision Engine writing policies directly  
-3. Multiple Knowledge databases per flavor  
-4. Auto-promote at low confidence  
-5. Storing API keys in Knowledge items  
+1. Meta owning Reflection or Learning
+2. Decision Engine writing policies directly
+3. Multiple Knowledge databases per flavor
+4. Auto-promote at low confidence
+5. Storing API keys in Knowledge items
 
 ---
 

@@ -1,0 +1,20 @@
+{
+  // CLIME Growth OS — docs are RFC tables + long normative lines.
+  // Enforce real defects; do not fail on 80-col architecture tables.
+  "config": {
+    "default": true,
+    "MD013": false,
+    "MD033": false,
+    "MD041": false,
+    "MD060": false,
+    "MD024": false
+  },
+  "globs": [
+    "docs/**/*.md",
+    "README.md"
+  ],
+  "ignores": [
+    "node_modules/**",
+    ".turbo/**"
+  ]
+}

@@ -1,0 +1,13 @@
+@import "@clime/ui/tokens.css";
+@import "tailwindcss";
+
+@layer base {
+  body {
+    background-color: var(--clime-bg);
+    color: var(--clime-fg);
+    font-family: var(--clime-font-sans);
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+}

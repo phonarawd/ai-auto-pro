@@ -1,8 +1,8 @@
 # 01 — Product: CLIME AI Growth Operating System
 
-**Status:** Phase 0 RFC (normative for V1 scope)  
-**App brand:** CLIME AI Growth Studio (`.exe`)  
-**Docs brand:** CLIME AI Growth Operating System  
+**Status:** Phase 0 RFC (normative for V1 scope)
+**App brand:** CLIME AI Growth Studio (`.exe`)
+**Docs brand:** CLIME AI Growth Operating System
 **Repo:** `C:\Users\PC\AI_CONTENT_OS`
 
 ---
@@ -11,7 +11,7 @@
 
 | Mislabel | Accurate label |
 |---|---|
-| SNS 자동화 / 자동 포스팅 툴 | **Wrong as product name** — posting is one optional step |
+| SNS 자동화 / 자동 포스팅 툴 | **Wrong as product name** — posting is one step inside the growth loop |
 | 자동 홍보 프로그램 | **Partial** — distribution slice only |
 | **Correct** | **Growth Operating System / Growth Business AI** for CLIME |
 
@@ -29,11 +29,11 @@ Comparable *ambition* (not feature parity): Buffer/Hootsuite/Later + SEMrush/Ahr
 | System | CLIME AI Growth Operating System |
 | App name | CLIME AI Growth Studio |
 | Purpose | Growth Business AI for CLIME — promo spine + ROI/allocation decisions |
-| Operator model | Autonomous prep + human review/approve |
-| Accounts | Account Engine + Capability Matrix |
-| Publish | Export default; live post only if `canPublish` |
+| Operator model | Autonomous prep + auto-publish + human gates where Matrix/risk require |
+| Accounts | Account Engine + Capability Matrix (status board) |
+| Publish | Full-auto ladder: API (P0) → BAE session (P1); Export = backup log |
 
-**Hard limit:** No universal auto-login + auto-post. Capabilities differ per platform.
+**Hard limit:** No ToS-hostile automation in core (captcha bypass, fingerprint spoof, proxy identity laundering, non-consensual bulk DM/botnet). Capabilities and `riskLevel` differ per platform. Challenge → auto-pause + Inbox.
 
 **Architecture limit:** Do **not** promote every intelligence feature to a top-level Engine.
 
@@ -48,8 +48,8 @@ Market research (Naver/Google/YT/IG/TikTok/Threads/Reddit/communities…)
   → Decide what to make + which channel mix (Decision Engine)
   → Produce (blog/reels/shorts/tiktok/threads + thumb/title/hashtag/SEO)
   → Channel transform
-  → Human review
-  → Export and/or API publish (canPublish only)
+  → Validate
+  → Auto-publish (official API P0, else BAE session P1) + Export backup log
   → Measure views/CTR/signups/investments
   → ROI analysis
   → Auto strategy revision (Executive + Learning + Reflection)
@@ -68,7 +68,7 @@ Market research (Naver/Google/YT/IG/TikTok/Threads/Reddit/communities…)
 ```text
 Observe → Research → Analyze → Predict
   → Plan (Executive week/month/quarter → Decision daily → Planner Queue)
-  → Generate → Validate → Optimize → Publish/Export
+  → Generate → Validate → Optimize → Publish (+ Export backup)
   → Measure → Learn → Reflect → Policy Update → Repeat
 ```
 
@@ -86,17 +86,17 @@ Trend + Market + Product/Price/Ad signals
 
 ## 5. V1 vs Phase-L+ Expansion Map
 
-**V1 ships:** organic Growth OS spine — research → profitability decide → produce → review → Export/(API post if `canPublish`) → signup/invest/ROI → learn/reflect/reallocate (format/keyword mix). Product/Price/Ad are **signals**, not full ads consoles.
+**V1 ships:** organic Growth OS spine — research → profitability decide → produce → validate → **auto-publish** (API or session) + Export backup → signup/invest/ROI → learn/reflect/reallocate. Product/Price/Ad are **signals**, not full ads consoles. **Paid Ads spend is always HumanGate.**
 
 **Phase-L+ Expansion Map** (design ports in RFCs; implement only after V1 ROI loop works). Each item is a **module/connector**, not a new top-level Domain Engine:
 
 | # | Expansion | Homes under | Capability rule |
 |---|---|---|---|
-| 1 | **Paid Ads OS** — Google/Meta/TikTok/Naver/Kakao Ads: create→budget→test→CPA/ROAS→pause→recreate | Account connectors + Meta/Executive + Decision + Experiment | Official Ads APIs only |
+| 1 | **Paid Ads OS** — Google/Meta/TikTok/Naver/Kakao Ads: create→budget→test→CPA/ROAS→pause→recreate | Account connectors + Meta/Executive + Decision + Experiment | Official Ads APIs only; spend = HumanGate |
 | 2 | **Landing Page AI** — diagnose low CVR→new landing→A/B→winner | Content + Experiment + Analytics | Export/hosting connector |
 | 3 | **CRM Growth Engine** — signup→nudge (push/email/Kakao)→revisit→invest→retention | Automation + Notification + future CRM connector | Provider APIs / user consent |
 | 4 | **SEO Intelligence depth** — rank track, competitor SERP, backlinks, internal links, clusters, topical authority | GIL/Content SEO module expansion | Search APIs / imports |
-| 5 | **Ads Creative AI** — low CTR→swap thumb/title/CTA→re-upload | Content + Paid Ads OS + Experiment | Ads API `canPublish` |
+| 5 | **Ads Creative AI** — low CTR→swap thumb/title/CTA→re-upload | Content + Paid Ads OS + Experiment | Ads API `canPublish`; spend HumanGate |
 | 6 | **Social Listening** — community/SNS/comments/news → sentiment → opportunity | GIL Market/Trend + Researcher | Capability-gated ingest |
 | 7 | **Competitor Spy+** — ads+landing+reels+shorts+YT change detection | Competitor Watch expansion | Public/API/import only |
 | 8 | **Revenue Forecast** (ops UI) — e.g. 25 reels → est. signups/invest/revenue | Analytics Simulator + Revenue Intelligence | Labeled estimates |
@@ -108,7 +108,7 @@ Trend + Market + Product/Price/Ad signals
 | 14 | **AI Financial Dashboard** — ad spend, signup, invest, LTV, CAC, ROAS, ROI, net profit | Analytics + Revenue + Paid Ads | Manual+API imports |
 | 15 | **Autonomous Growth Loop (full)** — market→product→price→ads→…→policy→next strategy | Agent Loop end-state | Every external side effect Capability-gated |
 
-**Invariant (never relax):** Capability Matrix · official API preferred · Export default · session≠publish · no ToS-hostile automation in core.
+**Invariant (never relax):** Capability Matrix status board · official API preferred (P0) · BAE session auto-publish when API absent (P1) · Export = backup log · challenge → auto-pause + Inbox · no ToS-hostile automation in core.
 
 Phase-L+ attaches via **Connector Registry + Domain API + Feature Gate** — core engines unchanged.
 
@@ -122,14 +122,14 @@ CLIME AI Growth Studio.exe
 │ AI Mission Center / Command Center       │
 │ 오늘 AI가 준비한 작업                      │
 │ ✔ 네이버 글 2 · 릴스 3 · 쇼츠 5 · 키워드    │
-│ [검토] [내보내기] [게시*]                  │
+│ [검토] [자동게시*] [내보내기 백업]           │
 └──────────────────────────────────────────┘
-* 게시 = capability 허용 시에만
+* 자동게시 = canPublish + publishMode(api|session); challenge 시 일시정지
 ```
 
-Typical morning: Naver check → recent posts analysis → keywords → blog → IG/Reels/Shorts transform → review queue → “검토만 하면 됩니다.”
+Typical morning: Naver check → recent posts analysis → keywords → blog → IG/Reels/Shorts transform → validate → auto-publish (or pause to Inbox on challenge).
 
-Browser profiles (Chrome P1→Naver, P2→IG, P3→Threads): BAE launches profile for **approved assist reads**; not universal publish.
+Browser profiles (Chrome P1→Naver, P2→IG, P3→Threads): BAE launches profile for **session connect + session auto-publish** when Matrix allows; not a captcha-bypass stack.
 
 ---
 
@@ -138,7 +138,7 @@ Browser profiles (Chrome P1→Naver, P2→IG, P3→Threads): BAE launches profil
 ```text
 CLIME AI Growth Studio
 ├── AI Mission Center          # HOME — today’s mission + START
-├── AI Inbox (+ Connector Doctor)
+├── AI Inbox (+ Connector Doctor + challenge pauses)
 ├── Projects
 ├── Account Manager
 │   ├── Sessions · Matrix · Router · Health · Doctor
@@ -151,7 +151,7 @@ CLIME AI Growth Studio
 ├── Mission Templates / Plans
 ├── Queue / Calendar / Keywords
 ├── Analytics
-└── Export
+└── Export (backup log browser)
 ```
 
 First-run: **AI Connection Wizard** (skippable; resumable from Account Manager). Quick Actions global.
@@ -163,18 +163,23 @@ First-run: **AI Connection Wizard** (skippable; resumable from Account Manager).
 | Foundation | V1 decision |
 |---|---|
 | Desktop | Electron + Next.js + TypeScript + Node |
-| DB | SQLite via Repository (Prisma); Postgres/Supabase later without engine rewrites |
+| Monorepo | pnpm workspaces + Turborepo |
+| DB | SQLite via Repository (**Drizzle**); Postgres/Supabase later without engine rewrites |
+| Schema | Zod + `schema_version` on boundary JSON |
+| UI | Tailwind + shadcn/ui + Pretendard |
+| Test / Lint | Vitest + Playwright (E2E) + ESLint + Prettier |
+| Ship | electron-builder + electron-updater (code-sign aware) |
 | Secrets | OS keychain / encrypted Vault — never commit keys |
 | VCS | GitHub required from Phase 0 |
 | Package manager | pnpm only |
-| MCP | FS, SQLite, Browser (assist when allowed) |
+| MCP | FS, SQLite, Browser (when Matrix allows) |
 
 ---
 
 ## 9. Delivery gates
 
 ```text
-Approve plan → Phase 0 RFCs (+ init git at AI_CONTENT_OS)
+Approve plan → Phase 0 RFCs (+ init git at AI_CONTENT_OS)  [DONE]
   → Approve implementation → Build → CLIME AI Growth Studio.exe
 ```
 
@@ -182,19 +187,19 @@ Approve plan → Phase 0 RFCs (+ init git at AI_CONTENT_OS)
 |---|---|---|
 | Plan + `docs/architecture/*` | Design for sequential Cursor implementation | A finished `.exe` |
 | Later implementation | Electron desktop app | Instant from markdown |
-| End deliverable | `CLIME AI Growth Studio.exe` | Universal auto-post / 17 top-level engines |
+| End deliverable | `CLIME AI Growth Studio.exe` | ToS-hostile universal auto-post fantasy / 17 top-level engines |
 
 ---
 
 ## 10. Must-keep pillars
 
-Growth OS · V1 slim (Growth 5 umbrellas; Executive long-horizon; Meta=Executive+Goal; Knowledge Store; Feature→Policy→Runtime; lean Registry; Global/Project/User) · Validate in Agent Loop · Planner Queue · Decision Graph · Confidence · 4 buses · 15 focused docs · L+ Expansion Map · Export-first
+Growth OS · V1 slim (Growth 5 umbrellas; Executive long-horizon; Meta=Executive+Goal; Knowledge Store; Feature→Policy→Runtime; lean Registry; Global/Project/User) · Validate in Agent Loop · Planner Queue · Decision Graph · Confidence · 4 buses · 15 focused docs · L+ Expansion Map · **full-auto publish ladder**
 
 ---
 
 ## 11. Cut from V1 (explicit)
 
-Full Paid Ads OS, Landing A/B suite, CRM/Email/Push, rank/backlink depth, Team Mode, Plugin Marketplace remote, fake universal auto-post, Workspace settings tier.
+Full Paid Ads OS, Landing A/B suite, CRM/Email/Push, rank/backlink depth, Team Mode, Plugin Marketplace remote, ToS-hostile bulk automation (captcha bypass / botnet / identity laundering), Workspace settings tier.
 
 ---
 
@@ -202,11 +207,12 @@ Full Paid Ads OS, Landing A/B suite, CRM/Email/Push, rank/backlink depth, Team M
 
 | Risk | Mitigation |
 |---|---|
-| Browser-session fragility | API-first; session assist opt-in |
+| Session / challenge fragility | API-first; session auto-publish + auto-pause + Inbox |
 | Fake “full internet firehose” expectations | Capability + import honesty |
 | Simulator/prediction overconfidence | Version assumptions; label estimates |
-| Universal auto-post expectations | Matrix badges in UI |
+| Unsafe automation pressure | Safety boundary + Matrix `riskLevel` badges |
 | Module sprawl | Engine boundaries + Feature Gate |
+| Token theft | Vault |
 
 ---
 
@@ -215,14 +221,16 @@ Full Paid Ads OS, Landing A/B suite, CRM/Email/Push, rank/backlink depth, Team M
 - Constitution / invariants → `02_CONSTITUTION.md`
 - Engines map → `03_ENGINES.md`
 - UX + phases → `15_DESKTOP_AND_ROADMAP.md`
+- Design System (tokens / Mission composition / UX Gate) → `16_DESIGN_SYSTEM.md`
 - Expansion ports also noted in `09_ANALYTICS.md`, `14_DATABASE.md`
+- Operator guide → `docs/setup/04_HOW_TO_OPERATE.md`
 
 ---
 
 ## 14. Acceptance (Phase 0)
 
 - [x] Product named as Growth OS, not posting tool
-- [x] V1 loop and Agent Loop documented
+- [x] V1 loop and Agent Loop documented (full-auto publish)
 - [x] Expansion Map #1–15 listed with homes
-- [x] Export-first / Capability publish rule stated
+- [x] Publish ladder + Capability status board stated
 - [x] Stack and delivery gates locked

@@ -1,0 +1,19 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+  - "packages/growth/*"
+
+# pnpm 11+: build-script allowlist (vitest → esbuild; storage → better-sqlite3; ship → electron)
+allowBuilds:
+  esbuild: true
+  better-sqlite3: true
+  electron: true
+  electron-winstaller: true
+onlyBuiltDependencies:
+  - esbuild
+  - better-sqlite3
+  - electron
+  - electron-winstaller
+
+engineStrict: true
+autoInstallPeers: true

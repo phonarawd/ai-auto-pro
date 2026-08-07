@@ -1,7 +1,7 @@
-# 08 — Content: Produce, Validate, SEO/Hook, Repurpose, Export
+# 08 — Content: Produce, Validate, SEO/Hook, Repurpose, Export Backup
 
-**Status:** Phase 0 RFC  
-**Package:** `packages/content/`  
+**Status:** Phase 0 RFC
+**Package:** `packages/content/`
 **Rule:** Content produces after Topic/Decision — it does not own daily mix.
 
 ---
@@ -17,14 +17,14 @@ Content Intelligence
 └── Brand application (Brand Intelligence rules)
 ```
 
-Plus: Produce · Validate · Optimize · Repurpose · Export · Publishing History hooks.
+Plus: Produce · Validate · Optimize · Repurpose · Export backup · Publishing History hooks · publish orchestration handoff to connectors.
 
 ---
 
 ## 2. Place in Agent Loop
 
 ```text
-… → Generate → Validate → Optimize → Publish/Export → …
+… → Generate → Validate → Optimize → Publish (+ Export backup) → …
 ```
 
 **Validate** is mandatory (constitutional). Owned here with Brand rules from Growth/research Brand Intelligence.
@@ -33,22 +33,22 @@ Plus: Produce · Validate · Optimize · Repurpose · Export · Publishing Histo
 
 ## 3. Generation with accounts
 
-User: “오늘 글 하나 만들어줘”  
+User: “오늘 글 하나 만들어줘”
 
-AI prepares: blog + IG + Reels + Shorts + TikTok + Naver variant…  
+AI prepares: blog + IG + Reels + Shorts + TikTok + Naver variant…
 
 Each artifact stores:
 
 - `targetAccountId`
-- channel + format metadata  
+- channel + format metadata
 - UI cue: “CLIME 계정으로 작성 ○”
 
 Grounding: Brand + Knowledge Store + account profile metadata (bio, categories).
 
 Account Router (Account Engine) picks targets before/at generate:
 
-- Campaign `이벤트` → IG `clime_event` + Threads/TikTok event  
-- Campaign `브랜드` → IG Official + Facebook Official  
+- Campaign `이벤트` → IG `clime_event` + Threads/TikTok event
+- Campaign `브랜드` → IG Official + Facebook Official
 
 ---
 
@@ -60,9 +60,10 @@ Checks before Optimize/Publish:
 |---|---|
 | Brand tone / voice | Brand Intelligence |
 | Forbidden phrases | Brand rules |
+| **High-risk finance / exaggerated earnings claims** | Brand + policy filter (reject or rewrite) |
 | Format / length / schema | Channel templates |
-| JSON/schema_version | Artifact contract |
-| Capability preflight | Matrix (for intended publish mode) |
+| JSON/schema_version (Zod) | Artifact contract |
+| Capability preflight | Matrix (`canPublish`, `publishMode`, `riskLevel`) |
 
 Failures → repair loop or `FAILED` / return to Generate per Policy. Never skip to live publish.
 
@@ -70,16 +71,16 @@ Failures → repair loop or `FAILED` / return to Generate per Policy. Never skip
 
 ## 5. Optimize & Repurpose
 
-- Cross-platform transform: blog → IG/Reels/Shorts/Threads/TikTok/X/Naver variants  
-- Hook / Title / Thumb / Hashtag passes  
-- SEO pass for long-form  
+- Cross-platform transform: blog → IG/Reels/Shorts/Threads/TikTok/X/Naver variants
+- Hook / Title / Thumb / Hashtag passes
+- SEO pass for long-form
 - Quality scoring gates “READY”
 
 ---
 
-## 6. Export packs (V1 publish path)
+## 6. Export packs (backup log + P2 fallback)
 
-Default distribution. Example layout:
+Export is a **parallel backup record** alongside auto-publish, and the always-available P2 manual path. Example layout:
 
 ```text
 Exports/2026-08-07/
@@ -97,12 +98,12 @@ Exports/2026-08-07/
 ```
 
 - Manifest includes `schema_version`
-- `publish_ready` + dated folder is the V1 happy path
+- Written on successful (or attempted) publish for audit/recovery
 - Core emits `PublishReadyPayload` + `accountId`
 
-### Live publish (later / when allowed)
+### Live auto-publish
 
-Connector packages implement platform publish **iff** `canPublish`. Core never imports Instagram/Naver SDKs directly.
+Connector packages implement platform publish **iff** Matrix `canPublish` with `publishMode: api|session`. Core never imports Instagram/Naver SDKs directly.
 
 ---
 
@@ -110,9 +111,9 @@ Connector packages implement platform publish **iff** `canPublish`. Core never i
 
 Per content × platform status:
 
-`draft | export | scheduled | posted_manual | posted_api`
+`draft | export | scheduled | posted_manual | posted_api | posted_session`
 
-Operations layer UI under Content. Session assist never auto-flips to `posted_api`.
+Operations layer UI under Content. Challenge pause must not silently flip to a posted_* state.
 
 ---
 
@@ -122,7 +123,7 @@ Maps to global machine in `05_WORKFLOW.md`:
 
 `QUEUED → RUNNING → VALIDATING → OPTIMIZING → READY → PUBLISHED`
 
-`PUBLISHED` includes export-complete with `publishMode: export|api`.
+`PUBLISHED` records `publishMode: api|session` (plus Export backup event). Terminal `PAUSED_CHALLENGE` when health detects challenge.
 
 ---
 
@@ -133,7 +134,7 @@ Maps to global machine in `05_WORKFLOW.md`:
 | `ContentAPI.enqueueGenerate` | Command |
 | `ContentAPI.getArtifact` | Query |
 | `ContentAPI.validate` | Command / node |
-| `ContentAPI.exportPack` | Command |
+| `ContentAPI.exportPack` | Command (backup / P2) |
 | `ContentAPI.listHistory` | Query |
 
 ---
@@ -144,9 +145,11 @@ Maps to global machine in `05_WORKFLOW.md`:
 |---|---|
 | `ContentGenerated` | Draft artifacts ready |
 | `ContentValidated` | Passed checks |
-| `ContentReadyForReview` | Human gate |
-| `ContentExported` | Export pack written |
-| `ContentPublishedApi` | Capability-gated API post |
+| `ContentReadyForReview` | Human gate when Policy/risk requires |
+| `ContentExported` | Export backup pack written |
+| `ContentPublishedApi` | API auto-publish |
+| `ContentPublishedSession` | BAE session auto-publish |
+| `ContentPublishPaused` | Challenge / health pause → Inbox |
 
 ---
 
@@ -162,19 +165,21 @@ Maps to global machine in `05_WORKFLOW.md`:
 
 ## 12. Quality & Brand
 
-- Quality Scoring influences READY vs regenerate  
-- Brand application must run in Validate even if Generate used brand prompts  
-- “CLIME답지 않음” is a first-class reject reason  
+- Quality Scoring influences READY vs regenerate
+- Brand application must run in Validate even if Generate used brand prompts
+- “CLIME답지 않음” is a first-class reject reason
+- High-risk finance / exaggerated profit claims are first-class Validate failures
 
 ---
 
 ## 13. Anti-patterns
 
-1. Content Engine deciding “make 15 reels today” (Decision’s job)  
-2. Skipping Validate under Feature flag “speed mode” for publish  
-3. Writing platform SDKs into content package  
-4. Export without `accounts.json` / schema_version  
-5. Treating manual paste as `posted_api`  
+1. Content Engine deciding “make 15 reels today” (Decision’s job)
+2. Skipping Validate under Feature flag “speed mode” for publish
+3. Writing platform SDKs into content package
+4. Export without `accounts.json` / schema_version
+5. Treating manual paste as `posted_api` / `posted_session`
+6. Captcha bypass or stealth stacks to force publish
 
 ---
 
@@ -183,15 +188,15 @@ Maps to global machine in `05_WORKFLOW.md`:
 - Workflow Validate node → `05_WORKFLOW.md`
 - Decision/Topic → `06_GROWTH.md`
 - AI providers → `07_AI.md`
-- Capability → `10_ACCOUNT.md`
+- Capability / session publish → `10_ACCOUNT.md`
 - Analytics measure → `09_ANALYTICS.md`
 
 ---
 
 ## 15. Acceptance (Phase 0)
 
-- [x] Validate mandatory in loop
-- [x] Export-first pack shape
+- [x] Validate mandatory in loop (incl. finance/earnings filter)
+- [x] Export = backup log + P2 fallback
 - [x] Account-aware artifacts
-- [x] Publishing History states
+- [x] Publishing History includes `posted_session`
 - [x] No platform SDK in core Content

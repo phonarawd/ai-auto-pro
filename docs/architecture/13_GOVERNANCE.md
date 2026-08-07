@@ -1,7 +1,7 @@
 # 13 — Governance: Feature → Policy → Runtime (+ Extensions)
 
-**Status:** Phase 0 RFC  
-**Package:** `packages/feature-management/` (name may evolve; concept locked)  
+**Status:** Phase 0 RFC
+**Package:** `packages/feature-management/` (name may evolve; concept locked)
 **V1 core:** Feature → Policy → Runtime — not a 12-headed mega-layer on day one.
 
 ---
@@ -49,9 +49,9 @@ Extensions **plug onto** the three-core; they do not block V1 ship.
 Global → Project → User
 ```
 
-- **Workspace** deferred to Team Mode (L+)  
-- Admin/Owner ≈ Global+Project governance  
-- User = UI prefs only  
+- **Workspace** deferred to Team Mode (L+)
+- Admin/Owner ≈ Global+Project governance
+- User = UI prefs only
 
 Config package stores values; Governance stores Feature/Policy/Runtime state.
 
@@ -59,8 +59,8 @@ Config package stores values; Governance stores Feature/Policy/Runtime state.
 
 ## 4. Module Registry (lean)
 
-**Registry row:** `ID · Version · Dependencies · Lifecycle`  
-**Manifest sidecar:** Name, Author, Description, Permission, License, Settings Schema, Events, Runtime hints  
+**Registry row:** `ID · Version · Dependencies · Lifecycle`
+**Manifest sidecar:** Name, Author, Description, Permission, License, Settings Schema, Events, Runtime hints
 
 Every unit registers (Feature Acceptance Gate #12).
 
@@ -76,20 +76,20 @@ Start with essential keys; expand schema via JSON.
 
 ## 6. Governor
 
-- Admits work based on concurrency, CPU/GPU%, cost envelopes  
-- Works with Resource Scheduler (Automation)  
-- Emits `GovernorThrottled` (System bus)  
-- Cost Intelligence proposes; Governor admits  
+- Admits work based on concurrency, CPU/GPU%, cost envelopes
+- Works with Resource Scheduler (Automation)
+- Emits `GovernorThrottled` (System bus)
+- Cost Intelligence proposes; Governor admits
 
 ---
 
 ## 7. Kill Switch
 
-- Required in V1  
-- Cancels leased jobs → Workflow `CANCELLED`  
-- Emits `KillSwitchActivated`  
-- Blocking UI banner via Domain API event forward  
-- Audit thin log entry mandatory  
+- Required in V1
+- Cancels leased jobs → Workflow `CANCELLED`
+- Emits `KillSwitchActivated`
+- Blocking UI banner via Domain API event forward
+- Audit thin log entry mandatory
 
 ---
 
@@ -143,11 +143,11 @@ Default **Developer** local license. Multi-tier License Manager is an extension 
 
 ## 13. Anti-patterns
 
-1. Building Permission+License+Audit+Health+Marketplace before Feature/Policy/Runtime works  
-2. Feature flags only in UI with no Runtime enforcement  
-3. Kill Switch that doesn’t cancel workers  
-4. Policy stored only in ad-hoc Config keys without schema  
-5. Bypassing Governor for “local quick jobs”  
+1. Building Permission+License+Audit+Health+Marketplace before Feature/Policy/Runtime works
+2. Feature flags only in UI with no Runtime enforcement
+3. Kill Switch that doesn’t cancel workers
+4. Policy stored only in ad-hoc Config keys without schema
+5. Bypassing Governor for “local quick jobs”
 
 ---
 
@@ -158,6 +158,7 @@ Default **Developer** local license. Multi-tier License Manager is an extension 
 - Buses/Obs → `12_INFRASTRUCTURE.md`
 - Learning proposals → `11_MEMORY_KNOWLEDGE.md`
 - Roadmap Phase A → `15_DESKTOP_AND_ROADMAP.md`
+- **Implementation contract (FROZEN):** [`docs/appendix/S25A_GOVERNANCE_CONTRACT.md`](../appendix/S25A_GOVERNANCE_CONTRACT.md) — Feature→Policy→Runtime+Kill semantics + `FeatureState` / `PolicyRule` / `KillSwitchState` mapping for `@clime/feature-management`
 
 ---
 

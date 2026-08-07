@@ -1,6 +1,6 @@
 # 03 — Engines: Domain Map & Package Layout
 
-**Status:** Phase 0 RFC  
+**Status:** Phase 0 RFC
 **Rule:** Exactly **nine** top-level Domain Engines + slim Meta + Learning package. Intelligence modules nest under engines — they are not new engines.
 
 ---
@@ -171,36 +171,47 @@ UI never imports buses. Engines collaborate via Commands/Events. See `04_DOMAIN_
 ## 9. GIL module contracts (summary)
 
 ### Decision Engine ★
+
 Merges Trend/Market/Product/Price/Ad signals, Keyword Graph, Topic, Revenue Prioritizer, Opportunity, Viral, Executive horizon constraints, Brand fit → **today’s ordered Mission Priority + production mix**. Writes `DecisionRecord` + Decision Graph.
 
 ### Revenue Prioritizer ★
+
 Ranks by expected CLIME path **content → signup → investment → revenue / ROI**, not vanity volume.
 
 ### Trend + Source Layer + Normalizer
+
 Pluggable Capability-gated sources → unified score + CLIME-fit + format tips.
 
 ### Keyword Graph
+
 Types: Primary/Secondary/Long-tail/Question/Commercial/Evergreen/Seasonal/Trending + graph edges. One article expands to related keywords/topics/follow-ups.
 
 ### Topic Generator
-Mandatory before body: Keyword/Graph → Topic → Title/Hook path.
+
+**Package home: `growth/planning`.** Mandatory before body: Keyword/Graph (research inputs) → Topic (planning) → Title/Hook path.
 
 ### Autonomous Growth Planner
+
 Goal/Gap/Opportunity → Mission templates → Schedule → Forecast. Does **not** rank daily work. Consumes Decision → enqueues Planner Queue.
 
 ### AI Researcher
+
 Always-on jobs: rising patterns → Brand-safe CLIME variants → feed Decision.
 
 ### Goal Manager
+
 `Goal → KPI → Mission → Strategy → Campaign → Content` (not Planner-private).
 
 ### Cost Intelligence (AI)
+
 Per task: cheapest/fastest sufficient provider; budgets; hard-stops.
 
 ### Resource Scheduler (Automation)
+
 Global admission: CPU/RAM/GPU/VRAM/token budgets; priority queues.
 
 ### Business Signals (Product/Price/Ad)
+
 V1: light analyzers feeding Decision/Revenue. L+: Paid Ads OS + Financial Dashboard.
 
 ---
@@ -238,7 +249,7 @@ Every engine module and connector:
 |---|---|
 | Notification | Infra |
 | Config store | Infra |
-| SQLite/Prisma | Storage + Repository |
+| SQLite/Drizzle | Storage + Repository |
 | Connector Doctor | Account ops + Notification/Inbox |
 | Paid Ads OS | L+ Expansion under Account + Meta + Decision |
 | CRM | L+ Expansion |

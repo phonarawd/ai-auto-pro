@@ -1,0 +1,43 @@
+# CLIME AI Growth Studio — Windows ship config (K2)
+# Brand SSOT must stay aligned with apps/desktop/src/ship/brand.ts
+
+appId: com.clime.growth-studio
+productName: CLIME AI Growth Studio
+copyright: Copyright © CLIME
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - dist/**/*
+  - package.json
+
+asar: true
+
+# electron-updater feed (operators replace URL / use GH Releases — see docs/setup/06_SHIP.md)
+publish:
+  provider: generic
+  url: https://updates.clime.local/growth-studio/
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  # Installed app + NSIS artifact carry the brand name (spaces intentional per product brand).
+  artifactName: ${productName}.${ext}
+  # Code-signing: set CSC_LINK + CSC_KEY_PASSWORD (or Windows certificate store).
+  # Unsigned local builds are allowed for smoke; SmartScreen will warn without a cert.
+  signAndEditExecutable: false
+  verifyUpdateCodeSignature: false
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  shortcutName: CLIME AI Growth Studio
+  uninstallDisplayName: CLIME AI Growth Studio
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+
+# Unpackaged smoke path: release/win-unpacked/CLIME AI Growth Studio.exe

@@ -1,7 +1,7 @@
 # 06 — Growth: Research · Planning · Decision · Revenue · Knowledge
 
-**Status:** Phase 0 RFC  
-**Package:** `packages/growth/{research,planning,decision,revenue,knowledge}`  
+**Status:** Phase 0 RFC
+**Package:** `packages/growth/{research,planning,decision,revenue,knowledge}`
 **Anti-pattern:** Growth must not become the whole OS.
 
 ---
@@ -40,13 +40,13 @@ Mission Center = Decision Engine output; **START** runs Agent Loop slice.
 
 Merges:
 
-- Trend / Market / Competitor signals  
-- Product / Price / Ad business signals  
-- Keyword Graph + Topic  
-- Revenue Prioritizer scores  
-- Opportunity / Viral  
-- Executive horizon constraints  
-- Brand fit  
+- Trend / Market / Competitor signals
+- Product / Price / Ad business signals
+- Keyword Graph + Topic
+- Revenue Prioritizer scores
+- Opportunity / Viral
+- Executive horizon constraints
+- Brand fit
 
 → **today’s ordered Mission Priority + production mix**.
 
@@ -109,15 +109,11 @@ Google Trends, Naver DataLab, YT/TikTok/IG/Threads, Reddit, News, cafes/communit
 
 ### Keyword Intelligence + Keyword Graph
 
-Types: Primary / Secondary / Long-tail / Question / Commercial / Evergreen / Seasonal / Trending  
+Types: Primary / Secondary / Long-tail / Question / Commercial / Evergreen / Seasonal / Trending
 
-Edges example: `AI부업 ↔ GPT ↔ ChatGPT ↔ 자동화 ↔ Cursor ↔ AI코딩 ↔ 돈버는AI`  
+Edges example: `AI부업 ↔ GPT ↔ ChatGPT ↔ 자동화 ↔ Cursor ↔ AI코딩 ↔ 돈버는AI`
 
 One article → expand: related keywords N, related topics N, follow-up posts N.
-
-### Topic Generator
-
-Mandatory before body: Keyword/Graph → Topic → Title/Hook path.
 
 ### AI Researcher
 
@@ -137,14 +133,22 @@ Tone, forbidden, CTA, phrases, voice, color/emotion; “CLIME답지 않음” ju
 
 **Data honesty:** Capability-gated sources; Cost/Resource limits always enforceable.
 
+**Not owned here:** **Topic Generator** — package home is `growth/planning` (research supplies Keyword/Graph inputs only).
+
 ---
 
 ## 6. Planning service
 
 ### Autonomous Growth Planner
 
-Builds executable plans from Goal/Gap/Opportunity → Mission templates → Schedule → Forecast.  
+Builds executable plans from Goal/Gap/Opportunity → Mission templates → Schedule → Forecast.
 Does **not** rank daily work (that is Decision). Consumes Decision → enqueues Planner Queue.
+
+### Topic Generator
+
+**Package home: `growth/planning`** (not under `growth/research`, not a research sibling package).
+Mandatory before body: Keyword/Graph (**research inputs**) → Topic (**planning**) → Title/Hook path.
+**Phase D window:** research Trend Source + Normalizer + Keyword Graph **inputs** + planning Topic Generator (same delivery window; ownership stays planning).
 
 ### Planner Queue producer
 
@@ -234,7 +238,7 @@ Each submodule: Manifest + Feature keys + tests in isolation.
 
 | Phase | Growth slice |
 |---|---|
-| D | Trend Source + Normalizer + Keyword Graph + Topic |
+| D | **research 입력** (Trend Source + Normalizer + Keyword Graph) + **planning Topic** (`growth/planning`) |
 | E | Revenue + Decision Graph → Mission Center |
 | G | Researcher + Competitor/Gap/Opportunity/Viral |
 | H | Planning polish + Scheduler intel + Experiments hook |
@@ -245,11 +249,12 @@ Each submodule: Manifest + Feature keys + tests in isolation.
 
 ## 13. Anti-patterns
 
-1. Second daily ranker in Planner or Recommendation  
-2. Growth importing Instagram SDK  
-3. Parallel `GrowthKnowledge` table beside Knowledge Store  
-4. Executive writing Planner Queue items directly  
-5. Research firehose without Capability/Cost gates  
+1. Second daily ranker in Planner or Recommendation
+2. Growth importing Instagram SDK
+3. Parallel `GrowthKnowledge` table beside Knowledge Store
+4. Executive writing Planner Queue items directly
+5. Research firehose without Capability/Cost gates
+6. Topic Generator implemented under `growth/research` (home is **planning**)
 
 ---
 
@@ -270,4 +275,5 @@ Each submodule: Manifest + Feature keys + tests in isolation.
 - [x] Decision sole daily arbiter
 - [x] Revenue path = signup/invest/ROI
 - [x] Research inventory nested correctly
+- [x] Topic Generator package home = `growth/planning` (Phase D = research inputs + planning Topic)
 - [x] Planner does not rank daily

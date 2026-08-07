@@ -49,7 +49,7 @@ Lockfile: `pnpm-lock.yaml` only.
 
 ## Disk note
 
-VS Build Tools + Ollama installers are multi‑GB. Keep **≥20 GB free** on `C:` before native Electron packaging.
+VS Build Tools + Ollama installers are multi‑GB. Keep **≥20 GB free** on `C:` before native Electron packaging (`check-toolchain` **FAIL** if below 20 GB; ship smoke: `scripts/ship-smoke.ps1`). See [`06_SHIP.md`](06_SHIP.md).
 
 ## Verification
 

@@ -1,6 +1,6 @@
 # 05 — Workflow: DSL, Agent Loop, Planner Queue
 
-**Status:** Phase 0 RFC  
+**Status:** Phase 0 RFC
 **Constitutional link:** Everything is a Workflow · Task State Machine
 
 ---
@@ -29,13 +29,13 @@ Executive (horizon)
 ```text
 Observe → Research → Analyze → Predict
   → Plan (Executive horizon → Decision daily → Planner Queue → Workflow)
-  → Generate → Validate → Optimize → Publish/Export
+  → Generate → Validate → Optimize → Publish (+ Export backup)
   → Measure → Learn (confidence) → Reflect → Policy Update → Repeat
 ```
 
 **Validate** (required): brand/forbidden/format/schema checks before Optimize/Publish. Owned by Content Quality + Brand rules — not Executive.
 
-Mission Center **START** runs an Agent Loop slice as a Workflow; user mostly **승인**.
+Mission Center **START** runs an Agent Loop slice as a Workflow; auto-publish proceeds per Matrix (`canPublish` + `publishMode`); challenge → `PAUSED_CHALLENGE` + Inbox.
 
 ---
 
@@ -53,13 +53,14 @@ QUEUED → RUNNING → VALIDATING → OPTIMIZING → READY → PUBLISHED
 |---|---|
 | `FAILED` | Unrecoverable after retries |
 | `CANCELLED` | User or Kill Switch |
-| `BLOCKED_HUMAN` | Awaiting review/approval |
+| `BLOCKED_HUMAN` | Awaiting review/approval (Policy / high `riskLevel` / Paid spend) |
 | `BLOCKED_CAPABILITY` | Matrix denies publish/action |
 | `BLOCKED_POLICY` | Feature/Policy/Governor denial |
+| `PAUSED_CHALLENGE` | Captcha/challenge/lock detected — auto-pause + Inbox |
 
 ### Notes
 
-- Export-complete maps to `PUBLISHED` for V1 export path (with `publishMode: export|api`).
+- `PUBLISHED` means live post via `publishMode: api|session`; Export backup is recorded in parallel.
 - `VALIDATING` failure may return to Generate or `FAILED` based on policy.
 - Every transition emits a Domain Event with `schema_version` + Trace ID.
 
@@ -75,6 +76,8 @@ QUEUED → RUNNING → VALIDATING → OPTIMIZING → READY → PUBLISHED
 - Resumable: persist node cursors + artifact refs
 
 ### 4.2 Example — Daily Growth (illustrative)
+
+**Required shape (V1):** every Daily Growth template includes a **`publish` node** (live post via Matrix) and an **`export` node** (Export backup log). Export is parallel backup — never the sole success path when `canPublish`.
 
 ```yaml
 schema_version: "1"
@@ -95,10 +98,14 @@ nodes:
     type: content.optimize
   - id: review_gate
     type: human.review
+  - id: publish
+    type: account.publish   # REQUIRED — Matrix canPublish + publishMode api|session
   - id: export
-    type: content.export
+    type: content.export    # REQUIRED — parallel backup log (not sole success path)
   - id: measure
     type: analytics.ingest_snapshot
+  - id: learn
+    type: learning.propose_from_roi   # REQUIRED — measure → learn (V1 DoD / constitution §2.5)
 edges:
   - [research_keywords, decide]
   - [decide, enqueue]
@@ -106,10 +113,17 @@ edges:
   - [generate, validate]
   - [validate, optimize]
   - [optimize, review_gate]
-  - [review_gate, export]
+  - [review_gate, publish]
+  - [review_gate, export]   # Export backup may fan out in parallel with publish
+  - [publish, measure]
   - [export, measure]
+  - [measure, learn]
 ```
 
+- **`publish` is mandatory** in the Daily Growth DSL (Phase C2 / B3 implementations must not drop it).
+- **Export backup** runs as a sibling path (parallel or immediately after); success of Export alone does not satisfy auto-publish when Matrix allows.
+- **`learn` is mandatory** after measure (ROI → Learning policy proposal; Confidence gate applies).
+- challenge → `PAUSED_CHALLENGE` (never silent `posted_*`).
 Concrete schema lands in implementation; this RFC locks the shape.
 
 ### 4.3 Node categories
@@ -118,8 +132,9 @@ Concrete schema lands in implementation; this RFC locks the shape.
 |---|---|
 | Growth | research, decide, revenue.estimate |
 | Content | generate, validate, optimize, repurpose, export |
-| Account | resolve_targets, capability_check |
+| Account | resolve_targets, capability_check, **publish** |
 | Analytics | measure, experiment.assign |
+| Learning | **propose_from_roi**, run_reflection |
 | Human | review, approve_spend |
 | System | notify, sleep, gate_feature |
 
@@ -186,8 +201,8 @@ Queue item → lease → run Workflow node(s) → checkpoint → complete/fail
 
 | Gate | When |
 |---|---|
-| Review before export/publish | Default for V1 content |
-| Approve spend | Always for ads (L+) / costly experiments |
+| Review before publish | When Policy / `riskLevel` requires (not a blanket block on auto-publish) |
+| Approve spend | Always for Paid Ads / costly experiments (HumanGate) |
 | Aggressive Learning rules | User confirm before Memory write |
 
 `BLOCKED_HUMAN` is first-class — not an error.
@@ -212,7 +227,7 @@ Powers Mission Center “why” and Executive Dashboard narratives (`ExecutiveAP
 Observe/Research (+ Product/Price/Ad signals)
   → Revenue Prioritizer → Decision Engine (priority + mix)
   → Planner (under Executive constraints)
-  → Generate → Validate → Optimize → Export → Measure/ROI
+  → Generate → Validate → Optimize → Publish (+ Export backup) → Measure/ROI
   → Learn → Reflect → Executive/Decision next cycle
 ```
 
@@ -250,5 +265,5 @@ Every run records: Trace ID, node timings, token/cost, feature denials, governor
 - [x] Agent Loop includes Validate
 - [x] State machine + terminals defined
 - [x] Planner Queue between Decision and Workers
-- [x] DSL principles + example shape
+- [x] DSL principles + Daily Growth example includes **`publish` node** + **Export backup** (parallel, not sole success)
 - [x] Human gates first-class

@@ -1,0 +1,80 @@
+/**
+ * @clime/ui token layer — docs/architecture/16_DESIGN_SYSTEM.md SSOT.
+ * Raw hex lives here (and tokens.ts) only. Feature screens consume var(--clime-*).
+ */
+:root {
+  /* §2.4 Core color roles — cool neutral ops + single teal-ink accent */
+  --clime-bg: #f1f5f9;
+  --clime-bg-elevated: #ffffff;
+  --clime-fg: #0f172a;
+  --clime-fg-muted: #64748b;
+  --clime-border: #e2e8f0;
+  --clime-accent: #0f766e;
+  --clime-accent-fg: #ffffff;
+  --clime-success: #15803d;
+  --clime-warning: #b45309;
+  --clime-danger: #b91c1c;
+  --clime-info: #0369a1;
+
+  /* §3 Typography — Pretendard locked */
+  --clime-font-sans: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  --clime-font-mono: "Pretendard Mono", ui-monospace, "Cascadia Code", Consolas,
+    monospace;
+
+  --clime-text-display: 30px;
+  --clime-text-title: 19px;
+  --clime-text-body: 14px;
+  --clime-text-ui: 13px;
+  --clime-text-caption: 12px;
+  --clime-text-mono: 12px;
+
+  --clime-font-weight-regular: 400;
+  --clime-font-weight-medium: 500;
+  --clime-font-weight-semibold: 600;
+
+  /* §4 Density — 4-based space-1…8 */
+  --clime-space-1: 4px;
+  --clime-space-2: 8px;
+  --clime-space-3: 12px;
+  --clime-space-4: 16px;
+  --clime-space-5: 20px;
+  --clime-space-6: 24px;
+  --clime-space-7: 28px;
+  --clime-space-8: 32px;
+
+  /* §2.3 Radius — quiet ops, not rounded-full pills */
+  --clime-radius-sm: 4px;
+  --clime-radius-md: 6px;
+  --clime-radius-lg: 8px;
+
+  /* §5 Motion — enter / CTA press / Inbox arrive only */
+  --clime-motion-enter: 180ms;
+  --clime-motion-cta: 100ms;
+  --clime-motion-inbox: 180ms;
+  --clime-motion-enter-distance: 6px;
+  --clime-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* §5 Motion families — enter / Inbox arrive (CTA press = transform transition on controls) */
+@keyframes clime-enter {
+  from {
+    opacity: 0;
+    transform: translateY(var(--clime-motion-enter-distance));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes clime-inbox-arrive {
+  from {
+    opacity: 0;
+    transform: translateX(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
